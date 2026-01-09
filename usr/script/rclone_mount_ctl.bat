@@ -38,8 +38,8 @@ exit /b 0
     echo USER_SID: %USER_SID% >> "%CTL_LOG_FILE%"
 
     :: --vfs-cache-mode full - Needed if applications edit files locally and expect changes to be uploaded correctly.
-    :: --dir-cache-time 0 - Disables directory caching entirely when set to 0.
-    :: --attr-timeout 0 - Controls how long file attributes (stat() results) stay cached. Makes external edits (mtime/size changes) show up instantly.
+    :: --dir-cache-time 1s - Disables directory caching entirely when set to 0.
+    :: --attr-timeout 1s - Controls how long file attributes (stat() results) stay cached. Makes external edits (mtime/size changes) show up instantly.
     :: --poll-interval 0 - Disables backend polling entirely. Default for sftp since it has no change notification support.
 
 	"%RCLONE_EXE_PATH%" mount "%RCLONE_PROFILE%":"%REMOTE_HOST_PATH%" "%LOCAL_VOLUME_LETTER%": ^
@@ -49,8 +49,8 @@ exit /b 0
       --network-mode ^
       --volname "%LOCAL_VOLUME_NAME%" ^
       --vfs-cache-mode full ^
-      --dir-cache-time .1s ^
-      --attr-timeout .1s ^
+      --dir-cache-time 1s ^
+      --attr-timeout 1s ^
       --poll-interval 0 ^
       --cache-dir "%RCLONE_PROFILE_PATH%\cache" ^
       -o FileSecurity="D:P(A;;FA;;;%USER_SID%)"
