@@ -9,8 +9,7 @@
 :: First add new profile name to the following list so the :main code will call it
 :: For consistency, these names should match the section names in rclone.conf file
 
-:: set "RCLONE_PROFILE_LIST=hostinger mypy3 pydock"
-set "RCLONE_PROFILE_LIST=hostinger mypy3 pydock"
+set "RCLONE_PROFILE_LIST=hostinger mypy3 pydock claude"
 
 :: Set the rclone install directory; this script expects this to be the name of the directory
 :: that contains the rclone.exe file, and be in the /bin directory below the installation basepath
@@ -61,6 +60,25 @@ exit /b 0 :: Exit the batch script
 
     endlocal
     exit /b
+
+:: -----------------------------
+:: Claude profile (A:) (claude)
+:: -----------------------------
+
+:claude
+    setlocal
+
+    set "RCLONE_PROFILE=claude" :: Same as section name in rclone.conf file
+    set "REMOTE_HOST_PATH=projects" :: Relative path from remote login path to use as mount path
+    set "LOCAL_VOLUME_LETTER=A"
+    set "LOCAL_VOLUME_NAME=projects-claude"
+
+    echo About to start rclone mount for %RCLONE_PROFILE% profile... >> "%GLOBAL_LOG_FILE%"
+    call :start_profile_mount
+
+    endlocal
+    exit /b
+
 
 :: -----------------------------
 :: Python Docker container (D:) (pydock)

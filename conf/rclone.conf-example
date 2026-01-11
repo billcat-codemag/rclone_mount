@@ -1,9 +1,9 @@
 [hostinger]
 type = sftp
-host = 82.25.83.203
+host = 88.223.84.164
 user = u919949149
 port = 65002
-pass =
+pass = [password omitted for example]
 shell_type = unix
 md5sum_command = md5sum
 sha1sum_command = sha1sum
@@ -24,6 +24,16 @@ host = 13.219.243.233
 user = devuser
 port = 2222
 key_file = G:\My Drive\aws_dev\keys\pydock_devuser_key.pem
+shell_type = unix
+md5sum_command = md5sum
+sha1sum_command = sha1sum
+
+[claude]
+type = sftp
+host = 13.219.243.233
+user = ec2-user
+port = 22
+key_file = G:\My Drive\aws_dev\keys\aws-micro-2024-kp.pem
 shell_type = unix
 md5sum_command = md5sum
 sha1sum_command = sha1sum
