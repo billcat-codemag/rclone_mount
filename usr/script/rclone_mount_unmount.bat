@@ -1,0 +1,47 @@
+@echo off
+
+:: BETA warning:
+:: this script seems to do a good job cleaning up the mounts, with the following caveats:
+::   - drive letters remain in Windows Explorer, but seem to be able to be remounted to the
+::         same target using the rclone_mount_start.bat script, without a reboot needed
+::   - mounting new target remotes on the same drive letter, without a reboot, is untested at this time
+
+:: rclone_mount_stop.bat
+:: Unmounts rclone mounts and cleans up Windows drive letters
+
+echo Starting rclone unmount process at %DATE% %TIME%
+echo:
+
+:: Drive letters - must match those in rclone_mount_start.bat
+set "DRIVE_LETTERS=H P D A"
+
+:: Kill all rclone processes
+echo Terminating rclone processes...
+tasklist /FI "IMAGENAME eq rclone.exe" 2>nul | find /I "rclone.exe" >nul
+if %ERRORLEVEL%==0 (
+    taskkill /F /IM rclone.exe >nul 2>&1
+    echo   Successfully terminated rclone processes
+    timeout /t 2 /nobreak >nul
+) else (
+    echo   No rclone processes found
+)
+
+echo:
+
+:: Disconnect each drive letter
+for %%D in (%DRIVE_LETTERS%) do (
+    echo Unmounting %%D: ...
+    if exist %%D:\ (
+        net use %%D: /delete /y >nul 2>&1
+        if !ERRORLEVEL!==0 (
+            echo   Successfully disconnected %%D:
+        ) else (
+            echo   Warning: Could not disconnect %%D:
+        )
+    ) else (
+        echo   Drive %%D: is not mounted
+    )
+)
+
+echo:
+echo Unmount process completed at %DATE% %TIME%
